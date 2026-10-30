@@ -18,7 +18,7 @@ def build_manifest(tmp_path, duplicate=False):
     if duplicate:
         rows[2]["subject_id"]="s0"
     path=tmp_path/"manifest.json"
-    path.write_text(json.dumps({"subjects":rows}))
+    path.write_text(json.dumps({"dataset":{"origin":"real_acquisition","name":"Unit-test fixture only","source_url":"https://example.org/unit-test","license":"test-only","citation":"unit test; not science"},"subjects":rows}))
     return path
 
 def test_manifest_subject_splits(tmp_path):
