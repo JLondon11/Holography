@@ -1,0 +1,8 @@
+{
+  "description": "Example only. Replace paths, subjects and SHA-256 checksums with actual authorized MRI scans. Do not commit patient metadata.",
+  "subjects": [
+    {"subject_id":"training_subject_001","path":"private/subject_001.nii.gz","split":"train","sha256":"REPLACE_WITH_ACTUAL_SHA256"},
+    {"subject_id":"validation_subject_001","path":"private/subject_002.nii.gz","split":"validation","sha256":"REPLACE_WITH_ACTUAL_SHA256"},
+    {"subject_id":"test_subject_001","path":"private/subject_003.nii.gz","split":"test","sha256":"REPLACE_WITH_ACTUAL_SHA256"}
+  ]
+}
