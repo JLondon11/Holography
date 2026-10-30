@@ -18,6 +18,11 @@ def read_manifest(path, verify_files=True):
     payload = json.loads(manifest_path.read_text())
     if not isinstance(payload, dict) or not isinstance(payload.get("subjects"), list):
         raise ValueError("JSON must have a subjects array")
+    provenance = payload.get("dataset")
+    if not isinstance(provenance, dict) or provenance.get("origin") != "real_acquisition":
+        raise ValueError("Real acquired dataset provenance declaration required")
+    if not all(isinstance(provenance.get(k),str) and provenance[k].strip() for k in ("name","source_url","license","citation")):
+        raise ValueError("Dataset name, source URL, license and citation are required")
     subjects = payload["subjects"]
     if not subjects:
         raise ValueError("Manifest is empty")
