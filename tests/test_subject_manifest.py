@@ -35,3 +35,20 @@ def test_digest_corruption_rejected(tmp_path):
     (tmp_path/"subject_0.npy").write_bytes(b"changed")
     with pytest.raises(ValueError,match="Checksum"):
         read_manifest(path)
+
+def test_same_file_under_different_ids_rejected(tmp_path):
+    path=build_manifest(tmp_path)
+    payload=json.loads(path.read_text())
+    payload["subjects"][2]["path"]=payload["subjects"][0]["path"]
+    payload["subjects"][2]["sha256"]=payload["subjects"][0]["sha256"]
+    path.write_text(json.dumps(payload))
+    with pytest.raises(ValueError,match="Duplicate input content"):
+        read_manifest(path)
+
+def test_test_split_required(tmp_path):
+    path=build_manifest(tmp_path)
+    payload=json.loads(path.read_text())
+    payload["subjects"][2]["split"]="train"
+    path.write_text(json.dumps(payload))
+    with pytest.raises(ValueError,match="held-out test"):
+        read_manifest(path)
