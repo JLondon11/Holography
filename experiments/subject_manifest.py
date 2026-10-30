@@ -22,6 +22,7 @@ def read_manifest(path, verify_files=True):
     if not subjects:
         raise ValueError("Manifest is empty")
     by_id = {}
+    by_digest = {}
     for row in subjects:
         if any(k not in row for k in REQUIRED):
             raise ValueError("Each row requires subject_id, path, split, sha256")
@@ -39,10 +40,12 @@ def read_manifest(path, verify_files=True):
                 raise FileNotFoundError(source)
             if sha256_file(source).lower() != str(row["sha256"]).lower():
                 raise ValueError(f"Checksum mismatch for {key}")
+        digest = str(row["sha256"]).lower()
+        if digest in by_digest:
+            raise ValueError(f"Duplicate input content between {by_digest[digest]} and {key}")
+        by_digest[digest] = key
         by_id[key] = {"subject_id":key, "split":split, "path":str(source),
                       "sha256":str(row["sha256"]).lower()}
-    if not any(r["split"] == "train" for r in by_id.values()) or not any(
-        r["split"] == "validation" for r in by_id.values()
-    ):
-        raise ValueError("Separate train and validation subjects are required")
+    if {r["split"] for r in by_id.values()} != SPLITS:
+        raise ValueError("Train, validation, and held-out test subjects are all required")
     return [by_id[k] for k in sorted(by_id)]
