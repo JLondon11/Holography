@@ -14,7 +14,7 @@ import re
 from pathlib import Path
 
 SOURCE = "https://brain-development.org/ixi-dataset/"
-PATTERN = re.compile(r"^IXI-(?P<id>[0-9]{3})-(?P<site>Guys|HH|IOP)-(?P<sequence>[^/]+)-T1\.nii(\.gz)?$", re.IGNORECASE)
+PATTERN = re.compile(r"^IXI(?P<id>[0-9]{3})-(?P<site>Guys|HH|IOP)-(?P<sequence>[^/]+)-T1\.nii(\.gz)?$", re.IGNORECASE)
 
 def sha256_file(path):
     digest = hashlib.sha256()
@@ -55,7 +55,7 @@ def create_manifest(source_dir):
         zooms = image.header.get_zooms()[:3]
         if len(zooms) != 3 or not all(np.isfinite(zooms)) or not all(z > 0 for z in zooms):
             raise ValueError(f"Invalid MRI voxel spacing: {path.name}")
-        # Data are read once for finite validation; expensive by design.
+        if not np.isfinite(image.affine).all() or np.linalg.det(image.affine[:3,:3]) == 0:\n            raise ValueError(f"Invalid MRI affine: {path.name}")\n        # Data are read once for finite validation; expensive by design.
         if not np.all(np.isfinite(np.asarray(image.dataobj))):
             raise ValueError(f"Nonfinite voxel intensities: {path.name}")
         rows.append({
