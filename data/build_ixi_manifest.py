@@ -84,8 +84,7 @@ def main():
     args=parser.parse_args()
     report=create_manifest(args.input_dir)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report,indent=2)+"
-")
+    args.output.write_text(json.dumps(report,indent=2)+chr(10))
     print(json.dumps({"verified_real_mri":len(report["subjects"]),
                       "split_counts":{s:sum(r["split"]==s for r in report["subjects"])
                                       for s in ("train","validation","test")},
