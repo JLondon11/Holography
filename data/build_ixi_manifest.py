@@ -55,7 +55,9 @@ def create_manifest(source_dir):
         zooms = image.header.get_zooms()[:3]
         if len(zooms) != 3 or not all(np.isfinite(zooms)) or not all(z > 0 for z in zooms):
             raise ValueError(f"Invalid MRI voxel spacing: {path.name}")
-        if not np.isfinite(image.affine).all() or np.linalg.det(image.affine[:3,:3]) == 0:\n            raise ValueError(f"Invalid MRI affine: {path.name}")\n        # Data are read once for finite validation; expensive by design.
+        if not np.isfinite(image.affine).all() or np.linalg.det(image.affine[:3,:3]) == 0:
+            raise ValueError(f"Invalid MRI affine: {path.name}")
+        # Data are read once for finite validation; expensive by design.
         if not np.all(np.isfinite(np.asarray(image.dataobj))):
             raise ValueError(f"Nonfinite voxel intensities: {path.name}")
         rows.append({
@@ -82,7 +84,8 @@ def main():
     args=parser.parse_args()
     report=create_manifest(args.input_dir)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report,indent=2)+"\n")
+    args.output.write_text(json.dumps(report,indent=2)+"
+")
     print(json.dumps({"verified_real_mri":len(report["subjects"]),
                       "split_counts":{s:sum(r["split"]==s for r in report["subjects"])
                                       for s in ("train","validation","test")},
