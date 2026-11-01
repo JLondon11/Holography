@@ -1,0 +1,30 @@
+{
+  "description": "Schema only; no scan files or invented scientific results. Actual dataset must be real-acquired, licensed and attributed.",
+  "dataset": {
+    "origin": "real_acquisition",
+    "name": "REPLACE with verified real dataset name",
+    "source_url": "REPLACE with actual dataset URL",
+    "license": "REPLACE with confirmed license",
+    "citation": "REPLACE with publication / dataset citation"
+  },
+  "subjects": [
+    {
+      "subject_id": "SUBJECT_ID_FROM_REAL_DATASET",
+      "path": "PATH_TO_ACTUAL_ANONYMIZED_MRI.nii.gz",
+      "split": "train",
+      "sha256": "COMPUTED_SHA256"
+    },
+    {
+      "subject_id": "ANOTHER_REAL_SUBJECT",
+      "path": "PATH_TO_REAL_VALIDATION_MRI.nii.gz",
+      "split": "validation",
+      "sha256": "COMPUTED_SHA256"
+    },
+    {
+      "subject_id": "THIRD_REAL_SUBJECT",
+      "path": "PATH_TO_REAL_TEST_MRI.nii.gz",
+      "split": "test",
+      "sha256": "COMPUTED_SHA256"
+    }
+  ]
+}

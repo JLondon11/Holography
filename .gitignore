@@ -1,0 +1,17 @@
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.venv/
+.env
+.DS_Store
+data/raw/
+data/processed/
+results/raw/
+*.dcm
+*.nii
+*.nii.gz
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.mat
