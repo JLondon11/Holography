@@ -31,8 +31,8 @@ def evaluate(manifest, checkpoint, out, axis=2):
         raise ValueError("Unsupported checkpoint")
     if tuple(float(z) for z in ckpt["depths_m"]) != tuple(DEPTHS):
         raise ValueError("Checkpoint depth mismatch")
-    if not np.isclose(float(ckpt["pixel_pitch_m"]), PITCH_M) or not np.isclose(
-            float(ckpt["wavelength_m"]), WAVELENGTH_M):
+    if not np.isclose(float(ckpt["pixel_pitch_m"]), PITCH_M, rtol=1e-8, atol=0) or not np.isclose(
+            float(ckpt["wavelength_m"]), WAVELENGTH_M, rtol=1e-8, atol=0):
         raise ValueError("Checkpoint optical parameters mismatch")
     model = make_model(ckpt["model_name"])
     model.load_state_dict(ckpt["model"], strict=True)
