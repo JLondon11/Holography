@@ -101,6 +101,8 @@ def run(manifest, checkpoint, out, steps=(5, 10, 20), lr=0.05,
         for method, initial in (("cnn_refine_adam",cnn_phase),
                                 ("random_adam",random_phase)):
             measures = optimize_checkpoints(initial,target,steps,lr)
+            if method == "cnn_refine_adam":
+                warm_final_mse = measures[max(steps)]["mse"]
             for budget, measurement in measures.items():
                 rows.append({"subject_id":record["subject_id"],
                              "method":method,"steps":budget,
@@ -109,7 +111,7 @@ def run(manifest, checkpoint, out, steps=(5, 10, 20), lr=0.05,
                                        (cnn_seconds if method=="cnn_refine_adam" else 0)})
         print(f"{index+1}/{len(chosen)} {record['subject_id']} "
               f"CNN={cnn_mse:.5f} "
-              f"warm{max(steps)}={measures[max(steps)]['mse']:.5f}",flush=True)
+              f"warm{max(steps)}={warm_final_mse:.5f}",flush=True)
 
     out = Path(out)
     out.mkdir(parents=True,exist_ok=True)
