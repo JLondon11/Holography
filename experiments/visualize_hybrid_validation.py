@@ -19,7 +19,6 @@ from mri_pipeline import build_target_planes, load_volume
 from subject_manifest import read_manifest
 from train_mri_subjects import make_model, DEPTHS, WAVELENGTH_M, PITCH_M
 from compare_mri_baselines import propagate_planes, target_scaled
-from refine_mri_validation import optimize_checkpoints
 
 
 def run(manifest, checkpoint, out, subject_ids, steps=20, lr=0.05, axis=2):
