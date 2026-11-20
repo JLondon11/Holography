@@ -10,7 +10,7 @@ and checkpoint were not independently accessed in this commit.
 - Real acquired IXI T1 MRI: 88 validation subjects; three MRI-derived optical display target intensity planes each (264 plane reconstructions).
 - Frozen PhaseCNN vs PhaseCNN-initialized Adam phase-only refinement, 20 steps at learning rate 0.05.
 - Wavelength 532 nm, SLM pixel pitch 3.74 μm, propagation distances 4/6/8 mm, 128×128 sampling.
-- Held-out 93-subject test split remains unused **by these validation scripts**.
+- The 93-subject test split was **not accessed by these diagnostic scripts**, but it **was evaluated once in the original PhaseCNN training script**, which reported heldout_test_mse ≈ 0.70057. It must not be described as a completely untouched final test cohort. An independent new acquired-MRI external cohort or transparently qualified final assessment is needed for unbiased final claims.
 - Checkpoint SHA-256: `cfb80dfbb701b8126657163045755455cf5d64bef676a3d8f22a45b2be601c8c`.
 - Manifest SHA-256: `dc68afaf4d40183aff16a50bfe7a41cb06405861a5d5efaa95abf0fcc8037983`.
 - Simulated scalar coherent-wave propagation from acquired MRI **intensity targets**, not MRI tissue optics or measured laboratory holography.
@@ -45,4 +45,4 @@ All denominators meet the implemented minimum native contrast of 0.05. The ranki
 2. A candidate edge-aware loss should first be studied on validation data with a fixed compute budget, honest comparison with original MSE and gradient metrics, and no claimed improvement until results exist.
 3. Visually inspect true MRI-derived reconstructed intensities and gradients (including the difficult IXI-337/373) to detect speckle amplification and misleading edge-correlation gains.
 4. Model and quantify physical limitations (SLM sampling, zero-order leakage, phase quantization, diffraction efficiency, axial cross-talk) only with justified optical assumptions; don't relabel simulated fields as laboratory measurements.
-5. Final manuscript should describe anatomical MRIs as *image sources for prescribed holographic display targets*, not optical measurements of brain tissue. Reserve untouched 93-subject evaluation until protocol and final model choice are frozen.
+5. Final manuscript should describe anatomical MRIs as *image sources for prescribed holographic display targets*, not optical measurements of brain tissue. Do not call the 93-subject split untouched: the original training run already reported its PhaseCNN test MSE. Freeze the protocol before any further test evaluation, and plan an independent new acquired-MRI cohort if a genuinely untouched final test is required.
